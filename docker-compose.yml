@@ -1,0 +1,20 @@
+version: "3.0"
+services:
+  dhcp4:
+    image: tsuzu/kea
+    network_mode: "host"
+    volumes:
+      - ./kea.conf:/usr/local/kea.conf
+      - socket:/var/run/
+
+  control-agent:
+    image: tsuzu/kea
+    ports:
+      - 6145:8080
+    volumes:
+      - ./kea.conf:/usr/local/kea.conf
+      - socket:/var/run/
+    command: ["kea-ctrl-agent", "-c", "/usr/local/kea.conf"]
+
+volumes:
+  socket:
